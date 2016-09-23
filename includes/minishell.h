@@ -74,4 +74,6 @@ void				change_dir(t_data *data, char *path);
 
 void				main_loop(t_data *data);
 
+int					strstrplus(char *s1, char *s2);
+
 #endif
