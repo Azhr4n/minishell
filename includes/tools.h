@@ -16,6 +16,7 @@
 void	ft_putstr(char *str);
 void	ft_putendl(char *str);
 void	szero(char *str, int len);
+void	ft_bzero(void *data, int size);
 void	free_2d(char **tab);
 
 int		ft_strlen(char *str);

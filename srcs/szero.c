@@ -23,3 +23,14 @@ void	szero(char *str, int len)
 		i++;
 	}
 }
+
+void	ft_bzero(void *data, int size)
+{
+	int		i;
+	char	*ptr;
+
+	ptr = data;
+	i = -1;
+	while (++i < size)
+		ptr[i] = 0;
+}

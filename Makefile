@@ -30,6 +30,7 @@ SRCS_MINISHELL =	srcs_minishell/minishell.c				\
 					srcs_minishell/btree_functions.c		\
 					srcs_minishell/b_cd.c					\
 					srcs_minishell/b_env.c					\
+					srcs_minishell/b_echo.c					\
 					srcs_minishell/b_setenv.c				\
 					srcs_minishell/b_unsetenv.c				\
 					srcs_minishell/builtins_exec.c			\

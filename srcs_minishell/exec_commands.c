@@ -18,10 +18,6 @@
 #include "minishell.h"
 #include "tools.h"
 
-#include "stdio.h"
-
-void	bricolage(t_btree *btree, char *path);
-
 void	exec_command(t_data *data, t_btree *btree, char buffer[BUFFSIZE + 1])
 {
 	pid_t	pid;
@@ -118,37 +114,4 @@ void	execute_command(t_data *data)
 		free_btree(data->btree[i]);
 		i++;
 	}
-}
-
-int		strstrplus(char *s1, char *s2)
-{
-	char	*ptr;
-	int		i;
-
-	while (*s1 != 0)
-	{
-		ptr = s1;
-		i = 0;
-		while (s2[i] != 0 && *s1 != 0 && *s1 == s2[i])
-		{
-			s1++;
-			i++;
-		}
-		if (ptr == s1)
-			s1++;
-		if (s2[i] == 0)
-			return (i);
-	}
-	return (0);
-}
-
-void	bricolage(t_btree *btree, char *path)
-{
-	char	**opt;
-
-	opt = split_space(btree->data);
-	if (opt[0][0] == '/')
-		printf("OKAY\n");
-	(void)path;
-	free_2d(opt);
 }

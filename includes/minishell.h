@@ -22,6 +22,13 @@ enum
 	NB_TYPE
 };
 
+enum
+{
+	ECHO_N,
+	ECHO_E,
+	NB_ECHO_OPT
+};
+
 typedef struct		s_btree
 {
 	struct s_btree	*left;
@@ -62,6 +69,8 @@ void				builtin_setenv(t_data *data, t_btree *btree);
 void				builtin_env(t_data *data, t_btree *btree);
 
 void				builtin_cd(t_data *data, t_btree *btree);
+
+int					builtin_echo(t_btree *btree);
 
 void				set_oldpwd(t_data *data, char *new_value);
 void				set_pwd(t_data *data);

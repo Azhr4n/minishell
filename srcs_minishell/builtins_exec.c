@@ -17,27 +17,32 @@
 
 int		call_builtin(t_data *data, t_btree *btree)
 {
+	int		ret;
+
+	ret = 0;
 	if (!strcmp_char(btree->data, "exit", ' '))
 		exit(0);
 	else if (!strcmp_char(btree->data, "cd", ' '))
 	{
 		builtin_cd(data, btree);
-		return (1);
+		ret = 1;
 	}
 	else if (!strcmp_char(btree->data, "env", ' '))
 	{
 		builtin_env(data, btree);
-		return (1);
+		ret = 1;
 	}
 	else if (!strcmp_char(btree->data, "setenv", ' '))
 	{
 		builtin_setenv(data, btree);
-		return (1);
+		ret = 1;
 	}
 	else if (!strcmp_char(btree->data, "unsetenv", ' '))
 	{
 		builtin_unsetenv(data, btree);
-		return (1);
+		ret = 1;
 	}
-	return (0);
+	else if (!strcmp_char(btree->data, "echo", ' '))
+		ret = builtin_echo(btree);
+	return (ret);
 }
