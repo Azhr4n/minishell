@@ -20,7 +20,7 @@ static void	cd_opt_dir(t_data *data, char **opt)
 {
 	DIR		*fd;
 
-	if (strcmp_char(opt[1], "-", ' '))
+	if (strcmp_char(opt[1], "-", ' ') && strcmp_char(opt[1], "~", ' '))
 	{
 		fd = opendir(opt[1]);
 		if (fd)
@@ -113,6 +113,7 @@ void		builtin_cd(t_data *data, t_btree *btree)
 	else if (size == 2)
 	{
 		cd_opt_minus(data, opt);
+		cd_opt_tild(data, opt);
 		cd_opt_dir(data, opt);
 	}
 	else

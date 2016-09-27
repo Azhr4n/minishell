@@ -15,6 +15,8 @@
 
 # define BUFFSIZE 2048
 
+# define SWAP(x) x == (0) ? 1 : 0
+
 enum
 {
 	SEPARATOR,
@@ -27,6 +29,19 @@ enum
 	ECHO_N,
 	ECHO_E,
 	NB_ECHO_OPT
+};
+
+enum
+{
+	BS_A,
+	BS_B,
+	BS_F,
+	BS_N,
+	BS_R,
+	BS_T,
+	BS_V,
+	BS_BS,
+	NB_BS_OPT
 };
 
 typedef struct		s_btree
