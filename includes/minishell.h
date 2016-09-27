@@ -44,6 +44,12 @@ enum
 	NB_BS_OPT
 };
 
+typedef struct		s_echo
+{
+	void			*next;
+	char			buff[BUFFSIZE];
+}					t_echo;
+
 typedef struct		s_btree
 {
 	struct s_btree	*left;
@@ -99,5 +105,8 @@ void				change_dir(t_data *data, char *path);
 void				main_loop(t_data *data);
 
 int					strstrplus(char *s1, char *s2);
+
+t_echo				*new_echo_elem(char *str);
+void				add_echo_at_end(t_echo *echo, char *str);
 
 #endif

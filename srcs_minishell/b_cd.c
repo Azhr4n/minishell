@@ -12,6 +12,7 @@
 
 #include <dirent.h>
 #include <unistd.h>
+#include <stdlib.h>
 
 #include "minishell.h"
 #include "tools.h"
@@ -20,7 +21,7 @@ static void	cd_opt_dir(t_data *data, char **opt)
 {
 	DIR		*fd;
 
-	if (strcmp_char(opt[1], "-", ' ') && strcmp_char(opt[1], "~", ' '))
+	if (strcmp_char(opt[1], "-", ' ') && ft_strncmp(opt[1], "~", 1))
 	{
 		fd = opendir(opt[1]);
 		if (fd)
@@ -30,6 +31,35 @@ static void	cd_opt_dir(t_data *data, char **opt)
 		}
 		else
 			write(1, "You don't have the rights to do that.\n", 38);
+	}
+}
+
+void		cd_opt_tild(t_data *data, char **opt)
+{
+	DIR		*fd;
+	char	*path;
+	int		index;
+
+	if (!ft_strncmp(opt[1], "~", 1))
+	{
+		if ((index = get_index_env(data->env, "HOME")) != -1)
+		{
+			if ((path = (char *)malloc(sizeof(char) * (ft_strlen(data->env[index]
+				+ ft_strlen("HOME=")) + ft_strlen(opt[1])))) == NULL)
+				return ;
+			path = ft_strcpy(path, data->env[index] + ft_strlen("HOME="));
+			path = ft_strcat(path, opt[1] + 1);
+			if ((fd = opendir(path)))
+			{
+				change_dir(data, path);
+				closedir(fd);
+			}
+			else
+				write(1, "Path inexistant.\n", 17);
+			free(path);
+		}
+		else
+			write(1, "No HOME in environment.\n", 24);
 	}
 }
 

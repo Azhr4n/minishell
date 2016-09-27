@@ -37,6 +37,11 @@ void	echo(char *data, int *options)
 	int			index;
 	int			g;
 
+	t_echo		*echo;
+
+	echo = NULL;
+	add_echo_at_end("bonjour ceci est un test");
+
 	g = 0;
 	while (*data)
 	{

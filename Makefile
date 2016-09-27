@@ -23,7 +23,8 @@ TOOLS =				srcs/split_char.c						\
 					srcs/ft_strlen.c						\
 					srcs/free_2d.c							\
 					srcs/str_char.c							\
-					srcs/szero.c
+					srcs/szero.c							\
+					srcs/get_next_line.c
 
 SRCS_MINISHELL =	srcs_minishell/minishell.c				\
 					srcs_minishell/shell_parser.c			\
