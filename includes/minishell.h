@@ -44,6 +44,13 @@ enum
 	NB_BS_OPT
 };
 
+enum
+{
+	NO_Q,
+	SIMPLE_Q,
+	DUAL_Q
+};
+
 typedef struct		s_echo
 {
 	void			*next;
@@ -107,6 +114,7 @@ void				main_loop(t_data *data);
 int					strstrplus(char *s1, char *s2);
 
 t_echo				*new_echo_elem(char *str);
-void				add_echo_at_end(t_echo *echo, char *str);
+void				add_echo_at_end(t_echo **echo, char *str);
+void				clean_list(void *ptr);
 
 #endif

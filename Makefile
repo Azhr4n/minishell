@@ -23,12 +23,12 @@ TOOLS =				srcs/split_char.c						\
 					srcs/ft_strlen.c						\
 					srcs/free_2d.c							\
 					srcs/str_char.c							\
-					srcs/szero.c							\
-					srcs/get_next_line.c
+					srcs/szero.c
 
 SRCS_MINISHELL =	srcs_minishell/minishell.c				\
 					srcs_minishell/shell_parser.c			\
 					srcs_minishell/btree_functions.c		\
+					srcs_minishell/echo_list.c				\
 					srcs_minishell/b_cd.c					\
 					srcs_minishell/b_env.c					\
 					srcs_minishell/b_echo.c					\

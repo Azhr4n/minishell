@@ -16,6 +16,8 @@
 #include "minishell.h"
 #include "tools.h"
 
+#include <stdio.h>
+
 int		get_index(char c)
 {
 	static char	tab[NB_BS_OPT] = {'a', 'b', 'f', 'n', 'r', 't', 'v', '\\'};
@@ -30,24 +32,31 @@ int		get_index(char c)
 	return (-1);
 }
 
-void	echo(char *data, int *options)
+int		starting_quote(char c, int current_state)
+{
+	if (c == '\"' && !current_state)
+		return (DUAL_Q);
+
+	else if (c == '\'' && !current_state)
+		return (SIMPLE_Q);
+		else if ((c == '\"' && current_state == DUAL_Q)
+			|| (c == '\'' && current_state == SIMPLE_Q))
+		return (NO_Q);
+	return (current_state);
+}
+
+void	print_echo_2(char *data, int *options)
 {
 	static char	tab[NB_BS_OPT] = {'\a', '\b', '\f', '\n',
 		'\r', '\t', '\v', '\\'};
-	int			index;
-	int			g;
-
-	t_echo		*echo;
-
-	echo = NULL;
-	add_echo_at_end("bonjour ceci est un test");
+	int		index;
+	int		g;
 
 	g = 0;
 	while (*data)
 	{
-		if (*data == '\'' || *data == '\"')
-			g = SWAP(g);
-		if (*data != '\'' && *data != '\"')
+		g = starting_quote(*data, g);
+		if ((*data != '\'' || g != SIMPLE_Q) && (*data != '\"' || g != DUAL_Q))
 		{
 			if (*data == '\\' && g && options[ECHO_E])
 			{
@@ -62,6 +71,50 @@ void	echo(char *data, int *options)
 		}
 		data++;
 	}
+}
+
+void	print_echo(t_echo *echo, int *options)
+{
+	t_echo	*ptr;
+
+	ptr = echo;
+	while(echo != NULL)
+	{
+		print_echo_2(echo->buff, options);
+		echo = echo->next;
+	}
+	clean_list(ptr);
+}
+
+void	echo(char *data, int *options)
+{
+
+	t_echo		*echo;
+	char		buffer[BUFFSIZE + 1];
+	int			end;
+	int			ret;
+	int			i;
+
+	(void)data;
+	echo = NULL;
+	end = 0;
+	while (!end)
+	{
+		if ((ret = read(0, buffer, BUFFSIZE)) == -1)
+			return ;
+		buffer[ret] = 0;
+		i = -1;
+		while (buffer[++i])
+		{
+			if (buffer[i] == '\"')
+			{
+				end = 1;
+				buffer[ret - 1] = 0;
+			}
+		}
+		add_echo_at_end(&echo, buffer);
+	}		
+	print_echo(echo, options);
 }
 
 char	*which_opt(char *data, int *options)

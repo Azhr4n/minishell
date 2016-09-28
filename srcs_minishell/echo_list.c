@@ -21,20 +21,38 @@ t_echo	*new_echo_elem(char *str)
 
 	if ((ret = (t_echo *)malloc(sizeof(t_echo))) == NULL)
 		return (NULL);
-	bzero(ret->buff, BUFFSIZE * sizeof(char));
-	ret->buff = ft_strcpy(ret->buff, str);
+	ft_bzero(ret->buff, BUFFSIZE * sizeof(char));
+	ft_strcpy(ret->buff, str);
 	ret->next = NULL;
 	return (ret);
 }
 
-void	add_echo_at_end(t_echo *echo, char *str)
+void	add_echo_at_end(t_echo **echo, char *str)
 {
 	t_echo	*ptr;
 
-	if (echo == NULL)
-		echo = new_echo_elem(str);
-	ptr = echo;
-	while (ptr->next != NULL)
-		ptr = ptr->next;
-	ptr->next = new_echo_elem(str);
+	if (*echo == NULL)
+		*echo = new_echo_elem(str);
+	else
+	{
+		ptr = *echo;
+		while (ptr->next != NULL)
+			ptr = ptr->next;
+		ptr->next = new_echo_elem(str);
+	}
+
+}
+
+void	clean_list(void *ptr)
+{
+	t_echo	*echo;
+	t_echo	*next;
+
+	echo = ptr;
+	while (echo->next != NULL)
+	{
+		next = echo->next;
+		free(echo);
+		echo = next;
+	}
 }
