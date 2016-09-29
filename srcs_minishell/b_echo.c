@@ -36,39 +36,50 @@ int		starting_quote(char c, int current_state)
 {
 	if (c == '\"' && !current_state)
 		return (DUAL_Q);
-
 	else if (c == '\'' && !current_state)
 		return (SIMPLE_Q);
-		else if ((c == '\"' && current_state == DUAL_Q)
-			|| (c == '\'' && current_state == SIMPLE_Q))
+	else if ((c == '\"' && current_state == DUAL_Q)
+		|| (c == '\'' && current_state == SIMPLE_Q))
 		return (NO_Q);
 	return (current_state);
 }
 
-void	print_echo_2(char *data, int *options)
+void	print_echo_3(char *data, int *options, int g)
 {
 	static char	tab[NB_BS_OPT] = {'\a', '\b', '\f', '\n',
 		'\r', '\t', '\v', '\\'};
 	int		index;
-	int		g;
 
-	g = 0;
-	while (*data)
+	if ((*data != '\'' && *data != '\"') || (*data == '\'' && g != SIMPLE_Q)
+		|| (*data == '\"' && g != DUAL_Q))
 	{
-		g = starting_quote(*data, g);
-		if ((*data != '\'' || g != SIMPLE_Q) && (*data != '\"' || g != DUAL_Q))
+		if (*data == '\\' && g && options[ECHO_E])
 		{
-			if (*data == '\\' && g && options[ECHO_E])
-			{
-				if ((index = get_index(*(data + 1))) != -1)
-					write(1, &tab[index], 1);
-				else
-					write(1, data, 1);
-				data++;
-			}
+			if ((index = get_index(*(data + 1))) != -1)
+				write(1, &tab[index], 1);
 			else
 				write(1, data, 1);
+			data++;
 		}
+		else
+			write(1, data, 1);
+	}
+}
+
+void	print_echo_2(char *data, int *options, int quote)
+{
+	int		old_g;
+	int		g;
+
+	g = quote;
+	while (*data)
+	{
+		old_g = g;
+		g = starting_quote(*data, g);
+		if (old_g && !g)
+			print_echo_3(data, options, old_g);
+		else
+			print_echo_3(data, options, g);
 		data++;
 	}
 }
@@ -76,11 +87,17 @@ void	print_echo_2(char *data, int *options)
 void	print_echo(t_echo *echo, int *options)
 {
 	t_echo	*ptr;
+	int		quote;
+	int		i;
 
 	ptr = echo;
+	quote = 0;
 	while(echo != NULL)
 	{
-		print_echo_2(echo->buff, options);
+		i = -1;
+		print_echo_2(echo->buff, options, quote);
+		while (echo->buff[++i])
+			quote = starting_quote(echo->buff[i], quote);
 		echo = echo->next;
 	}
 	clean_list(ptr);
@@ -88,32 +105,42 @@ void	print_echo(t_echo *echo, int *options)
 
 void	echo(char *data, int *options)
 {
-
 	t_echo		*echo;
 	char		buffer[BUFFSIZE + 1];
 	int			end;
 	int			ret;
 	int			i;
+	int			quote;
 
-	(void)data;
 	echo = NULL;
-	end = 0;
-	while (!end)
+	i = -1;
+	quote = NO_Q;
+	while (data[++i])
+		quote = starting_quote(data[i], quote);
+	add_echo_at_end(&echo, data);
+	if (quote != NO_Q)
 	{
-		if ((ret = read(0, buffer, BUFFSIZE)) == -1)
-			return ;
-		buffer[ret] = 0;
-		i = -1;
-		while (buffer[++i])
+		add_echo_at_end(&echo, "\n");
+		end = 0;
+		while (!end)
 		{
-			if (buffer[i] == '\"')
+			write(1, ">", 1);
+			if ((ret = read(0, buffer, BUFFSIZE)) == -1)
+				return ;
+			buffer[ret] = 0;
+			i = -1;
+			while (buffer[++i])
 			{
-				end = 1;
-				buffer[ret - 1] = 0;
+				if ((buffer[i] == '\"' && quote == DUAL_Q) 
+					|| (buffer[i] == '\'' && quote == SIMPLE_Q))
+				{
+					end = 1;
+					buffer[ret - 1] = 0;
+				}
 			}
+			add_echo_at_end(&echo, buffer);
 		}
-		add_echo_at_end(&echo, buffer);
-	}		
+	}
 	print_echo(echo, options);
 }
 

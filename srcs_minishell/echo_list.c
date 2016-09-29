@@ -40,7 +40,6 @@ void	add_echo_at_end(t_echo **echo, char *str)
 			ptr = ptr->next;
 		ptr->next = new_echo_elem(str);
 	}
-
 }
 
 void	clean_list(void *ptr)
