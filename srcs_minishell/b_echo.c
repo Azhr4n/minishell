@@ -103,6 +103,20 @@ void	print_echo(t_echo *echo, int *options)
 	clean_list(ptr);
 }
 
+t_echo	*chunking(char *data, t_echo *echo)
+{
+	char	buff[BUFFSIZE + 1];
+
+	while (ft_strlen(data) > BUFFSIZE)
+	{
+		ft_strncpy(buff, data, BUFFSIZE + 1);
+		add_echo_at_end(&echo, buff);
+		data += BUFFSIZE;
+	}
+	add_echo_at_end(&echo, data);
+	return (echo);
+}
+
 void	echo(char *data, int *options)
 {
 	t_echo		*echo;
@@ -117,7 +131,7 @@ void	echo(char *data, int *options)
 	quote = NO_Q;
 	while (data[++i])
 		quote = starting_quote(data[i], quote);
-	add_echo_at_end(&echo, data);
+	echo = chunking(data, echo);
 	if (quote != NO_Q)
 	{
 		add_echo_at_end(&echo, "\n");

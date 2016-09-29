@@ -16,24 +16,66 @@
 #include "minishell.h"
 #include "tools.h"
 
+#include <stdio.h>
+
+char	*magic(t_echo *echo)
+{
+	char	*str;
+	t_echo	*ptr;
+	int		length;
+	int		pos;
+
+	ptr = echo;
+	length = 0;
+	while (ptr)
+	{
+		length += ft_strlen(ptr->buff);
+		ptr = ptr->next;
+	}
+	str = (char *)malloc(sizeof(char) * (length + 1));
+	ft_bzero(str, length * (sizeof(char)) + 1);
+	ptr = echo;
+	pos = 0;
+	while (ptr)
+	{
+		ft_strcpy(&str[pos], ptr->buff);
+		pos += ft_strlen(ptr->buff);
+		ptr = ptr->next;
+	}
+	return (str);
+}
+
 void	main_loop(t_data *data)
 {
 	char	buff[BUFFSIZE + 1];
+	char	*str;
+	t_echo	*echo;
 	int		ret;
 
+	echo = NULL;
 	szero(buff, BUFFSIZE + 1);
-	ret = 1;
-	while (ret != 0)
+	ret = 0;
+	while (1)
 	{
-		write(1, "minishell> ", 10);
-		ret = read(0, buff, BUFFSIZE);
-		buff[ret - 1] = 0;
-		if (ret)
+		if (ret < BUFFSIZE)
+			write(1, "minishell> ", 10);
+		if ((ret = read(0, buff, BUFFSIZE)) < 0)
+			exit(1);
+		buff[ret] = 0;
+		if (buff[ret - 1] == '\n')
+			ret = 0;
+		if (ret >= 0 && ret < BUFFSIZE)
 		{
-			parsing_precut(data, buff);
+			str = magic(echo);
+			parsing_precut(data, str);
 			execute_command(data);
 			free(data->btree);
+			free(str);
+			clean_list(echo);
+			echo = NULL;
 		}
+		else if (ret == BUFFSIZE)
+			add_echo_at_end(&echo, buff);
 	}
 }
 

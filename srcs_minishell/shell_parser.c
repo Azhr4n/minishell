@@ -15,6 +15,8 @@
 #include "minishell.h"
 #include "tools.h"
 
+#include <stdio.h>
+
 void		parsing_precut(t_data *data, char *str)
 {
 	char	**commands;
@@ -64,6 +66,8 @@ static int	next_separator(char *str, char separator[3])
 	}
 	return (0);
 }
+
+// In parsing
 
 void		parsing(t_data *data, char *str, int btree_index)
 {

@@ -13,7 +13,7 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# define BUFFSIZE 2048
+# define BUFFSIZE 1
 
 # define SWAP(x) x == (0) ? 1 : 0
 
@@ -54,7 +54,7 @@ enum
 typedef struct		s_echo
 {
 	void			*next;
-	char			buff[BUFFSIZE];
+	char			buff[BUFFSIZE + 1];
 }					t_echo;
 
 typedef struct		s_btree
