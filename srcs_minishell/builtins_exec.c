@@ -15,6 +15,8 @@
 #include "minishell.h"
 #include "tools.h"
 
+#include <stdio.h>
+
 int		call_builtin(t_data *data, t_btree *btree)
 {
 	int		ret;

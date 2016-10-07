@@ -63,10 +63,16 @@ void	main_loop(t_data *data)
 			exit(1);
 		buff[ret] = 0;
 		if (buff[ret - 1] == '\n')
+		{
+			buff[ret - 1] = 0;
 			ret = 0;
+		}
 		if (ret >= 0 && ret < BUFFSIZE)
 		{
-			str = magic(echo);
+			if (echo != NULL)
+				str = magic(echo);
+			else
+				str = ft_strdup(buff);
 			parsing_precut(data, str);
 			execute_command(data);
 			free(data->btree);

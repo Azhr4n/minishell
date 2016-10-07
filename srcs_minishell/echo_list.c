@@ -47,11 +47,14 @@ void	clean_list(void *ptr)
 	t_echo	*echo;
 	t_echo	*next;
 
-	echo = ptr;
-	while (echo->next != NULL)
+	if (ptr != NULL)
 	{
-		next = echo->next;
-		free(echo);
-		echo = next;
+		echo = ptr;
+		while (echo->next != NULL)
+		{
+			next = echo->next;
+			free(echo);
+			echo = next;
+		}
 	}
 }

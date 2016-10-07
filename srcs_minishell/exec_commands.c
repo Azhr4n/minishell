@@ -18,6 +18,8 @@
 #include "minishell.h"
 #include "tools.h"
 
+#include <stdio.h>
+
 void	exec_command(t_data *data, t_btree *btree, char buffer[BUFFSIZE + 1])
 {
 	pid_t	pid;
@@ -57,7 +59,7 @@ int		split_paths(t_data *data, char ***paths)
 
 void	search_then_exec(t_data *data, t_btree *btree)
 {
-	char			buffer[BUFFSIZE + 1];
+	char			buffer[2048 + 1];
 	struct stat		buf;
 	char			**path;
 	int				i;
@@ -67,7 +69,7 @@ void	search_then_exec(t_data *data, t_btree *btree)
 		i = -1;
 		while (path[++i])
 		{
-			szero(buffer, BUFFSIZE + 1);
+			ft_bzero(buffer, sizeof(char) * (BUFFSIZE + 1));
 			if (btree->data[0] != '/')
 			{
 				ft_strcpy(buffer, path[i]);
