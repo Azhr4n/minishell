@@ -13,7 +13,7 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# define BUFFSIZE 1
+# define BUFFSIZE 2048
 
 # define SWAP(x) x == (0) ? 1 : 0
 

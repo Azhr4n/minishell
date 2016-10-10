@@ -44,25 +44,25 @@ int		starting_quote(char c, int current_state)
 	return (current_state);
 }
 
-void	print_echo_3(char *data, int *options, int g)
+void	print_echo_3(char **data, int *options, int g)
 {
 	static char	tab[NB_BS_OPT] = {'\a', '\b', '\f', '\n',
 		'\r', '\t', '\v', '\\'};
 	int		index;
 
-	if ((*data != '\'' && *data != '\"') || (*data == '\'' && g != SIMPLE_Q)
-		|| (*data == '\"' && g != DUAL_Q))
+	if ((**data != '\'' && **data != '\"') || (**data == '\'' && g != SIMPLE_Q)
+		|| (**data == '\"' && g != DUAL_Q))
 	{
-		if (*data == '\\' && g && options[ECHO_E])
+		if (**data == '\\' && g && options[ECHO_E])
 		{
-			if ((index = get_index(*(data + 1))) != -1)
+			if ((index = get_index(*(*data + 1))) != -1)
 				write(1, &tab[index], 1);
 			else
-				write(1, data, 1);
-			data++;
+				write(1, *data, 1);
+			(*data)++;
 		}
 		else
-			write(1, data, 1);
+			write(1, *data, 1);
 	}
 }
 
@@ -77,20 +77,19 @@ void	print_echo_2(char *data, int *options, int quote)
 		old_g = g;
 		g = starting_quote(*data, g);
 		if (old_g && !g)
-			print_echo_3(data, options, old_g);
+			print_echo_3(&data, options, old_g);
 		else
-			print_echo_3(data, options, g);
+			print_echo_3(&data, options, g);
 		data++;
 	}
 }
 
 void	print_echo(t_echo *echo, int *options)
 {
-	t_echo	*ptr;
 	int		quote;
 	int		i;
+	t_echo	*ptr;
 
-	ptr = echo;
 	quote = 0;
 	while(echo != NULL)
 	{
@@ -98,9 +97,10 @@ void	print_echo(t_echo *echo, int *options)
 		print_echo_2(echo->buff, options, quote);
 		while (echo->buff[++i])
 			quote = starting_quote(echo->buff[i], quote);
+		ptr = echo;
 		echo = echo->next;
+		free(ptr);
 	}
-	clean_list(ptr);
 }
 
 t_echo	*chunking(char *data, t_echo *echo)
