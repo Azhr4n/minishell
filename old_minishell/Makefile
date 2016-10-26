@@ -11,23 +11,7 @@
 # **************************************************************************** #
 
 CC = gcc
-<<<<<<< HEAD
 CFLAGS = -Wall -Wextra -Werror
-
-SRCS_MINISHELL =	srcs/env.c						\
-					srcs/b_cd.c						\
-					srcs/b_echo.c					\
-					srcs/cd_next.c					\
-					srcs/set_pwd.c					\
-					srcs/b_setenv.c					\
-					srcs/redirect.c					\
-					srcs/minishell.c				\
-					srcs/read_entry.c				\
-					srcs/b_unsetenv.c				\
-					srcs/shell_split.c				\
-					srcs/exec_commands.c
-=======
-CFLAGS = -Wall -Wextra -Werror -g
 
 TOOLS =				srcs/split_char.c						\
 					srcs/split_space.c						\
@@ -44,10 +28,8 @@ TOOLS =				srcs/split_char.c						\
 SRCS_MINISHELL =	srcs_minishell/minishell.c				\
 					srcs_minishell/shell_parser.c			\
 					srcs_minishell/btree_functions.c		\
-					srcs_minishell/echo_list.c				\
 					srcs_minishell/b_cd.c					\
 					srcs_minishell/b_env.c					\
-					srcs_minishell/b_echo.c					\
 					srcs_minishell/b_setenv.c				\
 					srcs_minishell/b_unsetenv.c				\
 					srcs_minishell/builtins_exec.c			\
@@ -58,24 +40,22 @@ SRCS_MINISHELL =	srcs_minishell/minishell.c				\
 					srcs_minishell/change_dir.c
 
 
->>>>>>> d3d291aa3f8351faaf85b2b08f229bc8a9a4c3a6
 
 OBJS_MINISHELL = $(SRCS_MINISHELL:.c=.o)
-LIBFT = libft/libft.a
+OBJS_TOOLS = $(TOOLS:.c=.o)
 
-CFLAGS += -I./includes -I./libft
+CFLAGS += -I./includes
 
 all: minishell
 
-minishell: $(OBJS_MINISHELL)
-	cd libft && make
-	$(CC) $(CFLAGS) $(LIBFT) $(OBJS_MINISHELL) -o $@
+minishell: $(OBJS_MINISHELL) $(OBJS_TOOLS)
+	$(CC) $(CFLAGS) $(OBJS_MINISHELL) $(OBJS_TOOLS) -o $@
 
 clean:
-	/bin/rm -f $(OBJS_MINISHELL) && cd libft && make clean
+	/bin/rm -f $(OBJS_MINISHELL) && /bin/rm -f $(OBJS_TOOLS)
 
 fclean: clean
-	/bin/rm -f minishell && cd libft && make fclean
+	/bin/rm -f minishell
 
 re: fclean all
 
