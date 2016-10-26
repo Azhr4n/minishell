@@ -49,7 +49,8 @@ static char	*create_str(char *src, char *buffer)
 	else
 	{
 		free(src);
-		if ((new_str = (char *)malloc(ft_strlen(src) + ft_strlen(buffer) + 1)) == NULL)
+		if ((new_str = (char *)malloc(ft_strlen(src)
+			+ ft_strlen(buffer) + 1)) == NULL)
 			exit(-1);
 		new_str = ft_strcpy(new_str, src);
 		new_str = ft_strcat(new_str, buffer);

@@ -70,7 +70,7 @@ static int	nb_letters(char *str)
 	return (count);
 }
 
-static char *split(char **str)
+static char	*split(char **str)
 {
 	char	*ret;
 	int		len;
@@ -84,7 +84,7 @@ static char *split(char **str)
 	if ((ret = (char *)malloc(sizeof(char) * (len + 1))) == NULL)
 		return (NULL);
 	ret[len] = 0;
-	ret = ft_strncpy(ret, *str, len); 
+	ret = ft_strncpy(ret, *str, len);
 	(*str) += len;
 	if (quote)
 		(*str)++;
@@ -106,7 +106,7 @@ char		**shell_split(char *str)
 		return (NULL);
 	array[len] = 0;
 	i = 0;
-	while (*str)
+	while (*str && i < len)
 	{
 		while (*str == ' ' || *str == '\t')
 			str++;

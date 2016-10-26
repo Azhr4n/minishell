@@ -13,7 +13,6 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-<<<<<<< HEAD
 # define BUFFSIZE 1024
 
 # define L ft_strlen
@@ -75,20 +74,6 @@ void				b_env(t_holder *holder);
 void				b_setenv(t_holder *holder);
 void				b_unsetenv(t_holder *holder);
 
-
 void				b_echo(t_holder *holder);
 
-=======
-# include "libft.h"
-
-# define BUFFSIZE 2048
-
-enum
-{
-	ECHO_N,
-	ECHO_E,
-	NB_ECHO
-};
-
->>>>>>> d3d291aa3f8351faaf85b2b08f229bc8a9a4c3a6
 #endif

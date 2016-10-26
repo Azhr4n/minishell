@@ -31,7 +31,7 @@ void	redirect(t_holder *holder)
 				if (!i)
 					exit(1);
 				else
-					holder->b_func[i](holder);	
+					holder->b_func[i](holder);
 				return ;
 			}
 			i++;

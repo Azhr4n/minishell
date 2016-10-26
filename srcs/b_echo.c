@@ -60,7 +60,6 @@ static int	print_env_key(char **env, char *str, int *printed)
 	}
 	free(env_key);
 	return (count);
-
 }
 
 static int	e_print(char **env, char *str)
